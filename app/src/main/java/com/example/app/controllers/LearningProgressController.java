@@ -54,6 +54,34 @@ public class LearningProgressController {
 
         return ResponseEntity.status(404).body("Learning Progress not found");
     }
+    // Update a learning progress update
+    @PutMapping("/learning-progress/{id}")
+    public ResponseEntity<?> updateLearningProgress(@PathVariable String id, @RequestBody LearningProgress updatedProgress) {
+        Optional<LearningProgress> progressOptional = learningProgressRepository.findById(id);
 
+        if (progressOptional.isPresent()) {
+            LearningProgress existingProgress = progressOptional.get();
+            existingProgress.setTopic(updatedProgress.getTopic());
+            existingProgress.setDescription(updatedProgress.getDescription());
+            existingProgress.setProgressStatus(updatedProgress.getProgressStatus());
+            existingProgress.setDatePosted(updatedProgress.getDatePosted());
+
+            LearningProgress savedProgress = learningProgressRepository.save(existingProgress);
+            return ResponseEntity.ok(savedProgress);
+        }
+
+        return ResponseEntity.status(404).body("Learning Progress not found");
+    }
+
+    // Delete a learning progress update
+    @DeleteMapping("/learning-progress/{id}")
+    public ResponseEntity<?> deleteLearningProgress(@PathVariable String id) {
+        if (learningProgressRepository.existsById(id)) {
+            learningProgressRepository.deleteById(id);
+            return ResponseEntity.ok("Learning Progress deleted");
+        }
+
+        return ResponseEntity.status(404).body("Learning Progress not found");
+    }
 
 }
