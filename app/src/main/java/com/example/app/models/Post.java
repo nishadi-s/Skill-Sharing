@@ -1,6 +1,7 @@
 package com.example.app.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -14,13 +15,14 @@ public class Post {
 
     private String title;
     private String content;
-    private List<String> mediaUrls;
-    private List<String> fileTypes;
-    private List<String> tags;
+    private List<String> mediaUrls; // URLs of the media files
+    private List<String> fileTypes; // Types of the media files (e.g., "image", "video")
+    private List<String> tags; // Tags for categorization
 
-    private String userId; // Changed from User to String
+    @DBRef
+    private User user; // Reference to the User document
 
-    private Date createdAt;
+    private Date createdAt; // Timestamp for when the post was created
 
     // Getters and Setters
     public String getId() {
@@ -71,12 +73,12 @@ public class Post {
         this.tags = tags;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreatedAt() {
