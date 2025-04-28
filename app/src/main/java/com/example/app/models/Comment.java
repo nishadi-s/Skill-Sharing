@@ -15,12 +15,23 @@ public class Comment {
     private String content;
 
     @DBRef
-    private Post post;
-
-    @DBRef
     private User user;
 
+    @DBRef
+    private Post post;
+
     private Date createdAt;
+
+    // Default constructor
+    public Comment() {}
+
+    // Constructor
+    public Comment(String content, User user, Post post) {
+        this.content = content;
+        this.user = user;
+        this.post = post;
+        this.createdAt = new Date();
+    }
 
     // Getters and Setters
     public String getId() {
@@ -39,20 +50,20 @@ public class Comment {
         this.content = content;
     }
 
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     public Date getCreatedAt() {
