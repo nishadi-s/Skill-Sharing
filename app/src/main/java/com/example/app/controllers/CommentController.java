@@ -3,70 +3,39 @@ package com.example.app.controllers;
 import com.example.app.models.Comment;
 import com.example.app.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/user/comments")
 public class CommentController {
 
     @Autowired
     private CommentService commentService;
 
-    // Create a comment on a post
     @PostMapping("/post/{postId}")
-    public ResponseEntity<Comment> createComment(
-            @PathVariable String postId,
-            @RequestBody Comment comment,
-            @RequestParam String userId) {
-        Comment createdComment = commentService.createComment(comment, postId, userId);
-        return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
+    public ResponseEntity<Comment> createComment(@PathVariable String postId, @RequestBody Comment comment) {
+        Comment createdComment = commentService.createComment(postId, comment);
+        return ResponseEntity.ok(createdComment);
     }
 
-    // Get a comment by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable String id) {
-        Optional<Comment> comment = commentService.getCommentById(id);
-        return comment.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    // Get all comments for a post
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable String postId) {
         List<Comment> comments = commentService.getCommentsByPostId(postId);
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+        return ResponseEntity.ok(comments);
     }
 
-    // Update a comment
-    @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateComment(
-            @PathVariable String id,
-            @RequestBody Comment comment,
-            @RequestParam String userId) {
-        try {
-            Comment updatedComment = commentService.updateComment(id, userId, comment.getContent());
-            return new ResponseEntity<>(updatedComment, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @PutMapping("/{commentId}")
+    public ResponseEntity<Comment> updateComment(@PathVariable String commentId, @RequestBody Comment comment) {
+        Comment updatedComment = commentService.updateComment(commentId, comment);
+        return ResponseEntity.ok(updatedComment);
     }
 
-    // Delete a comment
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(
-            @PathVariable String id,
-            @RequestParam String userId,
-            @RequestParam String postOwnerId) {
-        try {
-            commentService.deleteComment(id, userId, postOwnerId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable String commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.noContent().build();
     }
 }
