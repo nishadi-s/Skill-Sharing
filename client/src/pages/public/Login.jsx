@@ -11,7 +11,7 @@ const Login = () => {
   const handleGoogleLogin = () => {
     setIsLoading(true);
     setLoginError("");
-    try {bv
+    try {
       window.location.href =
         "http://localhost:8081/oauth2/authorization/google";
     } catch (error) {
