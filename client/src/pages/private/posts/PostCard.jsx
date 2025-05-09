@@ -128,7 +128,7 @@ const PostCard = ({ post }) => {
 
           {/* Edit and Delete buttons - Only visible for post author */}
           {isAuthor && (
-            <div className="flex space-x-2"
+            <div className="flex space-x-2">
               <Link
                 to={`/edit-post/${post.id}`}
                 state={{ post }}
