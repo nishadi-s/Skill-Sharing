@@ -26,7 +26,7 @@ import ProfilePage from "./pages/private/Profile";
 import NetworkPage from "./pages/private/Network";
 import Register from "./pages/public/Register";
 import Footer from "./components/common/Footer";
-//import ABC from "./pages/private/ABC.JSX";
+import ABC from "./pages/private/ABC.JSX";
 
 function App() {
   return (
