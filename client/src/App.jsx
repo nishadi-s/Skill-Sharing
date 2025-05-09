@@ -57,7 +57,7 @@ function App() {
                     <Route path="/friends" element={<NetworkPage />} />
 
                     {/* posts Routes */}
-                    <Route path="/posts/new" element={<CreatePost />} />
+                    <Route path="/post/new" element={<CreatePost />} />
                     <Route path="/post/:postId" element={<PostDetails />} />
                     <Route path="/edit-post/:postId" element={<EditPost />} />
 
