@@ -1,7 +1,7 @@
 package com.example.app.controllers;
 
-import com.example.app.models.Comment;
-import com.example.app.services.CommentService;
+import com.auth.app.model.Comment;
+import com.auth.app.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
