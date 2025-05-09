@@ -46,7 +46,7 @@ const Header = () => {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
               </svg>
               <span className="ml-2 text-xl font-bold text-gray-800">
-                Social App
+                Social Skill
               </span>
             </Link>
           </div>
@@ -59,9 +59,9 @@ const Header = () => {
                   className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors focus:outline-none"
                 >
                   <div className="h-8 w-8 rounded-full overflow-hidden bg-gray-200 border border-gray-300">
-                    {currentUser?.profileImage ? (
+                    {currentUser?.pictureUrl ? (
                       <img
-                        src={currentUser.profileImage}
+                        src={currentUser.pictureUrl}
                         alt={currentUser.name || currentUser.email}
                         className="h-full w-full object-cover"
                       />
@@ -90,7 +90,7 @@ const Header = () => {
                   }`}
                 >
                   <Link
-                    to="/profile"
+                    to={`/profile/${currentUser.id}`}
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors flex items-center"
                     onClick={() => setDropdownOpen(false)}
                   >
@@ -98,7 +98,7 @@ const Header = () => {
                     Profile
                   </Link>
                   <Link
-                    to="/settings"
+                    to="/edit-profile"
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors flex items-center"
                     onClick={() => setDropdownOpen(false)}
                   >
@@ -117,20 +117,6 @@ const Header = () => {
             ) : (
               <>
                 <div className="flex items-center space-x-4">
-                  <nav className="flex space-x-6">
-                    <Link
-                      to="/"
-                      className="text-gray-600 hover:text-blue-600 transition-colors px-2 py-1"
-                    >
-                      Home
-                    </Link>
-                    <Link
-                      to="/about"
-                      className="text-gray-600 hover:text-blue-600 transition-colors px-2 py-1"
-                    >
-                      About
-                    </Link>
-                  </nav>
                   <Link
                     to="/login"
                     className="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
