@@ -2,7 +2,6 @@ package com.example.app.services;
 
 import com.example.app.models.Like;
 import com.example.app.models.Post;
-import com.example.app.models.User;
 import com.example.app.repositories.LikeRepository;
 import com.example.app.repositories.PostRepository;
 import com.example.app.repositories.UserRepository;

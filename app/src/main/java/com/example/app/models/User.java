@@ -4,6 +4,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Document(collection = "users")
 public class User {
     @Id
@@ -16,6 +19,8 @@ public class User {
     private String pictureUrl;
     private String provider; // "google", "facebook", etc.
     private String providerId;
+    private List<String> followers = new ArrayList<>();
+    private List<String> following = new ArrayList<>();
 
     // Default constructor
     public User() {}
@@ -27,6 +32,8 @@ public class User {
         this.pictureUrl = pictureUrl;
         this.provider = provider;
         this.providerId = providerId;
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
     }
 
     // Getters and setters
@@ -76,5 +83,21 @@ public class User {
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
+    }
+
+    public List<String> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<String> followers) {
+        this.followers = followers;
+    }
+
+    public List<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<String> following) {
+        this.following = following;
     }
 }

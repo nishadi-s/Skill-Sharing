@@ -1,6 +1,5 @@
 package com.example.app.controllers;
 
-import com.example.app.models.User;
 import com.example.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
