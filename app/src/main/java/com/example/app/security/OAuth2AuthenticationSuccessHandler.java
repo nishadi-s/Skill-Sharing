@@ -45,15 +45,30 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String providerId = (String) attributes.get("sub");
 
         // Find existing user or create a new one
-        User user = userRepository.findByEmail(email)
-                .orElseGet(() -> {
-                    User newUser = new User(email, name, pictureUrl, provider, providerId);
-                    return userRepository.save(newUser);
-                });
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        User user;
 
-        // Update user information
-        user.setName(name);
-        user.setPictureUrl(pictureUrl);
+        if (userOptional.isPresent()) {
+            // User exists, update only if necessary
+            user = userOptional.get();
+            // Update provider and providerId if they differ (e.g., in case of provider changes)
+            if (!provider.equals(user.getProvider()) || !providerId.equals(user.getProviderId())) {
+                user.setProvider(provider);
+                user.setProviderId(providerId);
+            }
+            // Only update name and pictureUrl if they are null or empty (i.e., not customized)
+            if (user.getName() == null || user.getName().trim().isEmpty()) {
+                user.setName(name);
+            }
+            if (user.getPictureUrl() == null || user.getPictureUrl().trim().isEmpty()) {
+                user.setPictureUrl(pictureUrl);
+            }
+        } else {
+            // New user, create with all details
+            user = new User(email, name, pictureUrl, provider, providerId);
+        }
+
+        // Save the user (new or updated)
         userRepository.save(user);
 
         // Generate JWT token
