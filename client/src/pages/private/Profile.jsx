@@ -15,10 +15,11 @@ const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [updates, setUpdates] = useState([]);
+  const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [activeTab, setActiveTab] = useState("posts"); // Track active tab
+  const [activeTab, setActiveTab] = useState("posts");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -69,9 +70,22 @@ const ProfilePage = () => {
         );
         setUpdates(progressResponse.data);
 
+        // Fetch user's learning plans
+        const plansResponse = await axios.get(
+          `http://localhost:8081/api/user/learning-plans?userId=${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setPlans(plansResponse.data);
+
         setLoading(false);
       } catch (error) {
-        setError(error.response?.data || "Failed to load profile data.");
+        setError(
+          error.response?.data?.message || "Failed to load profile data."
+        );
         setLoading(false);
       }
     };
@@ -112,7 +126,7 @@ const ProfilePage = () => {
       MySwal.fire({
         icon: "error",
         title: "Error",
-        text: error.response?.data || "Failed to follow user.",
+        text: error.response?.data?.message || "Failed to follow user.",
       });
     }
   };
@@ -150,8 +164,52 @@ const ProfilePage = () => {
       MySwal.fire({
         icon: "error",
         title: "Error",
-        text: error.response?.data || "Failed to unfollow user.",
+        text: error.response?.data?.message || "Failed to unfollow user.",
       });
+    }
+  };
+
+  const handleDeletePlan = async (planId) => {
+    if (!currentUser || currentUser.id !== userId) {
+      MySwal.fire({
+        icon: "error",
+        title: "Unauthorized",
+        text: "You can only delete your own plans.",
+      });
+      return;
+    }
+    const result = await MySwal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    });
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(
+          `http://localhost:8081/api/user/learning-plans/${planId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setPlans(plans.filter((plan) => plan.id !== planId));
+        MySwal.fire({
+          icon: "success",
+          title: "Deleted",
+          text: "Learning plan deleted.",
+          timer: 1500,
+        });
+      } catch (error) {
+        MySwal.fire({
+          icon: "error",
+          title: "Error",
+          text:
+            error.response?.data?.message || "Failed to delete learning plan.",
+        });
+      }
     }
   };
 
@@ -174,7 +232,7 @@ const ProfilePage = () => {
   return (
     <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
       {/* Profile Header */}
-      <div className=" p-6 text-gray-600">
+      <div className="p-6 text-gray-600">
         <div className="flex items-center">
           <img
             src={user.pictureUrl || "https://via.placeholder.com/96"}
@@ -236,6 +294,16 @@ const ProfilePage = () => {
           >
             Progress Updates
           </button>
+          <button
+            onClick={() => setActiveTab("learningPlans")}
+            className={`px-4 py-3 font-medium text-sm ${
+              activeTab === "learningPlans"
+                ? "border-b-2 border-blue-500 text-blue-600"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            My Learning Plans
+          </button>
         </nav>
       </div>
 
@@ -275,6 +343,85 @@ const ProfilePage = () => {
                       <p className="text-xs text-gray-500">
                         {new Date(update.createdAt).toLocaleDateString()}
                       </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {activeTab === "learningPlans" && (
+          <>
+            {currentUser && currentUser.id === userId && (
+              <header className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-medium">My Learning Plans</h1>
+                <button
+                  onClick={() => navigate("/create-learning-plan")}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                >
+                  Create New Plan
+                </button>
+              </header>
+            )}
+
+            {plans.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <p>No learning plans found.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {plans.map((plan) => (
+                  <div
+                    key={plan.id}
+                    className="bg-white p-4 border rounded shadow-sm hover:shadow"
+                  >
+                    <div className="flex justify-between">
+                      <h3
+                        className="text-xl font-semibold cursor-pointer hover:text-blue-600"
+                        onClick={() => navigate(`/learning-plan/${plan.id}`)}
+                      >
+                        {plan.title}
+                      </h3>
+                      <div className="text-sm bg-gray-100 px-2 py-1 rounded">
+                        {plan.completed ? "Completed" : "In Progress"}
+                      </div>
+                    </div>
+
+                    <p className="text-gray-600 mt-1 mb-2">
+                      {plan.description}
+                    </p>
+
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm text-gray-500">
+                        Topics: {plan.topics.length}
+                      </div>
+                      <div className="space-x-2">
+                        <button
+                          onClick={() => navigate(`/learning-plan/${plan.id}`)}
+                          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded text-sm"
+                        >
+                          View
+                        </button>
+                        {currentUser && currentUser.id === userId && (
+                          <>
+                            <button
+                              onClick={() =>
+                                navigate(`/edit-learning-plan/${plan.id}`)
+                              }
+                              className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDeletePlan(plan.id)}
+                              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                            >
+                              Delete
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
