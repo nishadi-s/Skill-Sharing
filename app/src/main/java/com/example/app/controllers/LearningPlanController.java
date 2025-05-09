@@ -1,7 +1,7 @@
 package com.example.app.controllers;
 
 import com.example.app.models.LearningPlan;
-import com.example.app.Services.LearningPlanService;
+import com.example.app.services.LearningPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
