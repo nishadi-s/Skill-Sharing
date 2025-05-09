@@ -25,8 +25,8 @@ public class LearningPlanController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LearningPlan>> getLearningPlansByUser() {
-        List<LearningPlan> plans = learningPlanService.getLearningPlansByUser();
+    public ResponseEntity<List<LearningPlan>> getLearningPlansByUser(@RequestParam(value = "userId", required = false) String userId) {
+        List<LearningPlan> plans = learningPlanService.getLearningPlansByUser(userId);
         return ResponseEntity.ok(plans);
     }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import { UserPlus, UserCheck, UserX } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const NetworkPage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -153,12 +154,14 @@ const NetworkPage = () => {
               </div>
             )}
           </div>
-          <div className="ml-4">
-            <h4 className="font-medium">{user.name || user.username}</h4>
-            {user.title && (
-              <p className="text-sm text-gray-600">{user.title}</p>
-            )}
-          </div>
+          <Link to={`/profile/${user.id}`}>
+            <div className="ml-4">
+              <h4 className="font-medium">{user.name || user.username}</h4>
+              {user.title && (
+                <p className="text-sm text-gray-600">{user.title}</p>
+              )}
+            </div>
+          </Link>
         </div>
         <button
           onClick={() => handleFollowChange(user.id, !isFollowing)}

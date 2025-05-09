@@ -46,11 +46,17 @@ public class LearningPlanService {
         return learningPlanRepository.save(learningPlan);
     }
 
-    public List<LearningPlan> getLearningPlansByUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        User user = userOptional.orElseThrow(() -> new RuntimeException("User not found"));
-        return learningPlanRepository.findByUserId(user.getId());
+    public List<LearningPlan> getLearningPlansByUser(String userId) {
+        if (userId == null || userId.trim().isEmpty()) {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            Optional<User> userOptional = userRepository.findByEmail(email);
+            User user = userOptional.orElseThrow(() -> new RuntimeException("User not found"));
+            return learningPlanRepository.findByUserId(user.getId());
+        } else {
+            Optional<User> userOptional = userRepository.findById(userId);
+            User user = userOptional.orElseThrow(() -> new RuntimeException("User not found"));
+            return learningPlanRepository.findByUserId(userId);
+        }
     }
 
     public LearningPlan getLearningPlanById(String planId) {
