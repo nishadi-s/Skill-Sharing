@@ -4,7 +4,6 @@ import com.example.app.models.Comment;
 import com.example.app.models.Post;
 import com.example.app.repositories.CommentRepository;
 import com.example.app.repositories.PostRepository;
-import com.example.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
