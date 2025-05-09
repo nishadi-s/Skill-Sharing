@@ -6,7 +6,7 @@ import withReactContent from "sweetalert2-react-content";
 import { AuthContext } from "../../context/AuthContext";
 import PostCard from "../../components/Posts/PostCard";
 
-const MySwal = withReactContent(Swal);
+const MySwal = withReactContent(Swal)
 
 const ProfilePage = () => {
   const { userId } = useParams();
