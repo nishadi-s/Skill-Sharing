@@ -1,4 +1,4 @@
-package com.example.app.Services;
+package com.example.app.services;
 
 import com.example.app.models.LearningPlan;
 import com.example.app.models.ProgressUpdate;
