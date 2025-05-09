@@ -21,7 +21,7 @@ const OAuth2RedirectHandler = () => {
 
     if (token) {
       login(token);
-      navigate("/dashboard/profile");
+      navigate("/feed");
     } else {
       navigate("/");
     }
