@@ -23,7 +23,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private Userservice userService;
+    private UserService userService;
 
     @GetMapping("/user/me")
     public ResponseEntity<?> getCurrentUser() {
