@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends MongoRepository<Post, String> {
-    List<Post> findByUser(com.example.app.model.User user);
+    List<Post> findByUser(com.example.app.models.User user);
     List<Post> findByTagsContaining(String tag);
 }
