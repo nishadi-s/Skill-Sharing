@@ -21,7 +21,7 @@ const CreateProgressUpdate = () => {
       if (!currentUser) return;
       try {
         const response = await axios.get(
-          "http://localhost:8081/api/user/learning-plans",
+          "http://localhost:8080/api/user/learning-plans",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
