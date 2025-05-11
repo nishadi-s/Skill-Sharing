@@ -47,7 +47,6 @@ function App() {
                   <Routes>
                     {/* <Route path="/" element={<Dashboard />} /> */}
                     <Route path="/feed" element={<Feed />} />
-
                     <Route path="/abc" element={<ABC />} />
 
                     {/* User routes */}
@@ -57,7 +56,7 @@ function App() {
                     <Route path="/friends" element={<NetworkPage />} />
 
                     {/* posts Routes */}
-                    <Route path="/post/new" element={<CreatePost />} />
+                    <Route path="/posts/new" element={<CreatePost />} />
                     <Route path="/post/:postId" element={<PostDetails />} />
                     <Route path="/edit-post/:postId" element={<EditPost />} />
 
