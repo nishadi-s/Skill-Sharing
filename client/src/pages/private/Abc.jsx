@@ -38,4 +38,4 @@ const ABC = () => {
   );
 };
 
-export default ABC;
+export default ABC
