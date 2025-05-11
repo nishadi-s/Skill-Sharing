@@ -111,7 +111,7 @@ const PostDetails = () => {
       MySwal.fire({
         icon: "warning",
         title: "Empty Comment",
-        text: "Please enter a comment before posting.",
+        text: "Please enter a comment before posting."
       });
       return;
     }
